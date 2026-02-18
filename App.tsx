@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './services/auth';
 import { PlanProvider } from './services/planContext'; 
@@ -17,9 +16,14 @@ import { DailyLog, INITIAL_LOG } from './types';
 import { LayoutDashboard, PlusCircle, History, Target, Users, LogOut, ArrowLeft, Loader2, BarChart2, BrainCircuit, Shield } from 'lucide-react';
 
 // INITIALIZE SUPABASE GLOBALLY
-// Uses Environment Variables defined in your hosting provider (Vercel/Netlify) with safe fallback
-const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL || 'https://ewqhndyjsrplgsjrwyvl.supabase.co';
-const SUPABASE_KEY = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY || 'sb_publishable_JqoQpKprStqz27WeCzfJkA_mTdLCY_Q';
+// Using Vite Environment Variables (Must be set in Vercel Dashboard)
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+if (!SUPABASE_URL || !SUPABASE_KEY) {
+  console.warn('⚠️ MISSING SUPABASE ENVIRONMENT VARIABLES ⚠️');
+  console.warn('Make sure to add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your Vercel Project Settings.');
+}
 
 initSupabase({
     url: SUPABASE_URL,
