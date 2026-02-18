@@ -1,4 +1,3 @@
-
 import { DailyLog, MonthlyPlan, INITIAL_PLAN } from '../types';
 import { aggregateLogs } from './analytics';
 
@@ -518,10 +517,13 @@ export const calculateDailyPlan = (allLogs: DailyLog[], plan: MonthlyPlan) => {
     const div = Math.max(1, result.remaining_workdays);
     const daily_leads = result.remaining_workdays > 0 ? Math.ceil(rem_leads / div) : 0;
 
+    // Define capacity safely to avoid TS errors
+    const capacity = plan.daily_call_capacity || 0;
+
     return {
         is_target_set,
         remaining_workdays: result.remaining_workdays,
-        warning_capacity_exceeded: plan.daily_call_capacity > 0 && result.dailyPlan.attempts > plan.daily_call_capacity,
+        warning_capacity_exceeded: capacity > 0 && result.dailyPlan.attempts > capacity,
         
         // Daily Targets
         daily_attempts: result.dailyPlan.attempts,
